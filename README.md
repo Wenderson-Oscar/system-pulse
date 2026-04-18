@@ -28,8 +28,6 @@ SystemPulse is a lightweight menu bar application for macOS that gives you a rea
 
 Built entirely in Swift and SwiftUI, SystemPulse reads data straight from Apple's low-level APIs (IOKit, SMC, CoreMediaIO, Darwin) with no third-party dependencies. It is designed to be fast, unobtrusive, and accurate.
 
-> Click the menu bar icon at any time to see a full breakdown of your system's current state.
-
 ---
 
 ## Features
