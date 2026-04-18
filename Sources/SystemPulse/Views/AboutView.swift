@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AboutView: View {
-    @Environment(\.dismiss) private var dismiss
+    var onClose: () -> Void
 
     private let features: [(icon: String, title: String, description: String)] = [
         (
@@ -120,7 +120,7 @@ struct AboutView: View {
                     .font(.system(size: 9))
                     .foregroundColor(.secondary.opacity(0.6))
                 Spacer()
-                Button("Close") { dismiss() }
+                Button("Close") { onClose() }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.small)
             }

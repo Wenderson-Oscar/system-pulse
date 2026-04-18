@@ -9,6 +9,10 @@ struct PopoverView: View {
     @State private var showAbout = false
 
     var body: some View {
+        if showAbout {
+            AboutView(onClose: { showAbout = false })
+                .frame(width: 300, height: 520)
+        } else {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 8) {
                 // Header
@@ -25,9 +29,6 @@ struct PopoverView: View {
                     }
                     .buttonStyle(.borderless)
                     .help("About SystemPulse")
-                    .sheet(isPresented: $showAbout) {
-                        AboutView()
-                    }
                 }
 
                 Divider()
@@ -214,6 +215,7 @@ struct PopoverView: View {
             .padding(12)
         }
         .frame(width: 300, height: 520)
+        } // else
     }
 
     // MARK: - Compact Components
