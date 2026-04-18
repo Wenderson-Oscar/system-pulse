@@ -16,7 +16,7 @@ enum ToolWindows {
         let content = ProcessListView(monitor: monitor)
         let hosting = NSHostingController(rootView: content)
         let w = NSWindow(contentViewController: hosting)
-        w.title = "Processos"
+        w.title = "Processes"
         w.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         w.setContentSize(NSSize(width: 620, height: 440))
         w.center()
@@ -36,7 +36,7 @@ enum ToolWindows {
         let content = HeavyFilesView(monitor: monitor)
         let hosting = NSHostingController(rootView: content)
         let w = NSWindow(contentViewController: hosting)
-        w.title = "Arquivos pesados"
+        w.title = "Heavy Files"
         w.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         w.setContentSize(NSSize(width: 720, height: 480))
         w.center()

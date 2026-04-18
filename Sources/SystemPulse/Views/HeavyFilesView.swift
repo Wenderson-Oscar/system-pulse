@@ -9,34 +9,34 @@ struct HeavyFilesView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("Arquivos pesados")
+                Text("Heavy Files")
                     .font(.headline)
                 Spacer()
-                Button(scanning ? "Escaneando…" : "Escanear agora") { scan() }
+                Button(scanning ? "Scanning…" : "Scan Now") { scan() }
                     .disabled(scanning)
             }
-            Text("Pastas: Downloads, Desktop, Documents, Movies")
+            Text("Folders: Downloads, Desktop, Documents, Movies")
                 .font(.caption)
                 .foregroundColor(.secondary)
             Divider()
             Table(files) {
-                TableColumn("Arquivo") { f in
+                TableColumn("File") { f in
                     Text(f.url.lastPathComponent).lineLimit(1)
                 }
-                TableColumn("Caminho") { f in
+                TableColumn("Path") { f in
                     Text(f.url.deletingLastPathComponent().path)
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                         .truncationMode(.middle)
                 }
-                TableColumn("Tamanho") { f in
+                TableColumn("Size") { f in
                     Text(ByteCountFormatter.string(fromByteCount: Int64(f.sizeBytes), countStyle: .file))
                         .font(.system(.caption, design: .monospaced))
                 }
                 .width(100)
                 TableColumn("") { f in
-                    Button("Revelar") {
+                    Button("Reveal") {
                         NSWorkspace.shared.activateFileViewerSelecting([f.url])
                     }
                     .buttonStyle(.bordered)

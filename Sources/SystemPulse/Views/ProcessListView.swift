@@ -8,13 +8,13 @@ struct ProcessListView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Processos (top 10 por RAM)")
+            Text("Processes (top 10 by RAM)")
                 .font(.headline)
             Divider()
             Table(rows) {
                 TableColumn("PID") { r in Text("\(r.pid)").font(.system(.caption, design: .monospaced)) }
                     .width(60)
-                TableColumn("Nome") { r in Text(r.name).lineLimit(1) }
+                TableColumn("Name") { r in Text(r.name).lineLimit(1) }
                 TableColumn("RAM") { r in
                     Text(ByteCountFormatter.string(fromByteCount: Int64(r.memoryBytes), countStyle: .memory))
                         .font(.system(.caption, design: .monospaced))

@@ -6,6 +6,7 @@ struct PopoverView: View {
     @State private var showPurgeConfirm = false
     @State private var showLagResetConfirm = false
     @State private var netPeakMbps: Double = 10
+    @State private var showAbout = false
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
@@ -15,11 +16,23 @@ struct PopoverView: View {
                     Text("Performance Monitor")
                         .font(.system(size: 12, weight: .bold))
                     Spacer()
+                    Button {
+                        showAbout = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 13))
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.borderless)
+                    .help("About SystemPulse")
+                    .sheet(isPresented: $showAbout) {
+                        AboutView()
+                    }
                 }
 
                 Divider()
 
-                // App em primeiro plano
+                // Foreground app
                 compactSection(icon: "memorychip", title: monitor.frontAppName) {
                     HStack(spacing: 12) {
                         miniStat("RAM", value: monitor.frontAppMemoryString)
@@ -27,7 +40,7 @@ struct PopoverView: View {
                     }
                 }
 
-                // RAM do sistema
+                // System RAM
                 compactBar(
                     icon: "memorychip.fill",
                     title: "RAM",
@@ -51,19 +64,19 @@ struct PopoverView: View {
                     tint: gpuUsage > 85 ? .red : (gpuUsage > 60 ? .orange : .accentColor)
                 )
 
-                // Latência
+                // Latency
                 compactBar(
                     icon: "gauge.with.dots.needle.67percent",
-                    title: "Latência da interface",
+                    title: "Interface Latency",
                     value: String(format: "%.1f ms", monitor.lagMs),
                     progress: min(monitor.lagMs, 100) / 100,
                     tint: monitor.lagMs > 50 ? .red : (monitor.lagMs > 16 ? .orange : .green),
-                    detail: String(format: "Pico: %.1f ms", monitor.lagPeakMs)
+                    detail: String(format: "Peak: %.1f ms", monitor.lagPeakMs)
                 )
 
-                // Ventoinhas
+                // Fans
                 if !monitor.fans.isEmpty {
-                    compactSection(icon: "fan", title: "Ventoinhas") {
+                    compactSection(icon: "fan", title: "Fans") {
                         VStack(spacing: 4) {
                             ForEach(Array(monitor.fans.enumerated()), id: \.offset) { _, f in
                                 let maxR = max(Double(f.maxRPM), 1)
@@ -86,8 +99,8 @@ struct PopoverView: View {
                     }
                 }
 
-                // Rede
-                compactSection(icon: "network", title: "Rede") {
+                // Network
+                compactSection(icon: "network", title: "Network") {
                     VStack(spacing: 3) {
                         let peak = max(netPeakMbps, monitor.downloadMbps, monitor.uploadMbps, 1)
                         HStack(spacing: 4) {
@@ -117,25 +130,25 @@ struct PopoverView: View {
                     .onChange(of: monitor.uploadMbps) { v in if v > netPeakMbps { netPeakMbps = v } }
                 }
 
-                // Bateria
+                // Battery
                 let health = Double(monitor.batteryHealthPercent)
                 compactBar(
                     icon: "battery.100.bolt",
-                    title: "Bateria",
+                    title: "Battery",
                     value: "\(monitor.batteryHealthPercent)%",
                     progress: health / 100,
                     tint: health < 60 ? .red : (health < 80 ? .orange : .green),
-                    detail: "Vida útil: \(monitor.batteryHealthPercent)% · \(monitor.batteryCycleCount) ciclos"
+                    detail: "Health: \(monitor.batteryHealthPercent)% · \(monitor.batteryCycleCount) cycles"
                 )
 
-                // Câmera
+                // Camera
                 compactSection(icon: monitor.cameraInUse ? "video.fill" : "video.slash",
-                               title: "Câmera") {
+                               title: "Camera") {
                     HStack(spacing: 6) {
                         Circle()
                             .fill(monitor.cameraInUse ? Color.green : Color.red)
                             .frame(width: 6, height: 6)
-                        Text(monitor.cameraInUse ? "Ativa (gravando)" : "Inativa")
+                        Text(monitor.cameraInUse ? "Active (recording)" : "Inactive")
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(monitor.cameraInUse ? .green : .red)
                     }
@@ -143,14 +156,14 @@ struct PopoverView: View {
 
                 Divider()
 
-                // Ações
+                // Actions
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Ações").font(.system(size: 10, weight: .semibold))
+                    Text("Actions").font(.system(size: 10, weight: .semibold))
                     HStack(spacing: 6) {
-                        compactButton("Processos", icon: "list.bullet.rectangle") {
+                        compactButton("Processes", icon: "list.bullet.rectangle") {
                             ToolWindows.showProcesses(monitor: monitor)
                         }
-                        compactButton("Arquivos", icon: "doc.text.magnifyingglass") {
+                        compactButton("Files", icon: "doc.text.magnifyingglass") {
                             ToolWindows.showHeavyFiles(monitor: monitor)
                         }
                         compactButton("Purge", icon: "arrow.triangle.2.circlepath.circle") {
@@ -164,12 +177,12 @@ struct PopoverView: View {
 
                     if showPurgeConfirm {
                         confirmationPanel(
-                            title: "Purgar RAM?",
-                            message: "Executa /usr/sbin/purge. Requer senha de admin.",
-                            confirmLabel: "Purgar", destructive: true
+                            title: "Purge RAM?",
+                            message: "Runs /usr/sbin/purge. Requires admin password.",
+                            confirmLabel: "Purge", destructive: true
                         ) {
                             showPurgeConfirm = false
-                            purgeStatus = "Executando…"
+                            purgeStatus = "Running…"
                             DispatchQueue.global().async {
                                 let msg = SystemActions.purgeRAM()
                                 DispatchQueue.main.async { purgeStatus = msg }
@@ -178,9 +191,9 @@ struct PopoverView: View {
                     }
                     if showLagResetConfirm {
                         confirmationPanel(
-                            title: "Zerar pico de lag?",
-                            message: "Reinicia o valor de pico para 0 ms.",
-                            confirmLabel: "Zerar", destructive: false
+                            title: "Reset lag peak?",
+                            message: "Resets the peak value to 0 ms.",
+                            confirmLabel: "Reset", destructive: false
                         ) {
                             monitor.resetLagPeak(); showLagResetConfirm = false
                         } onCancel: { showLagResetConfirm = false }
@@ -194,7 +207,7 @@ struct PopoverView: View {
 
                 HStack {
                     Spacer()
-                    Button("Sair") { NSApplication.shared.terminate(nil) }
+                    Button("Quit") { NSApplication.shared.terminate(nil) }
                         .buttonStyle(.borderless).foregroundColor(.red).font(.system(size: 11))
                 }
             }
@@ -271,7 +284,7 @@ struct PopoverView: View {
             Text(message).font(.system(size: 9)).foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             HStack {
-                Button("Cancelar", action: onCancel).buttonStyle(.bordered).controlSize(.mini)
+                Button("Cancel", action: onCancel).buttonStyle(.bordered).controlSize(.mini)
                 Spacer()
                 Button(confirmLabel, action: onConfirm).buttonStyle(.borderedProminent).controlSize(.mini)
                     .tint(destructive ? .red : .accentColor)

@@ -19,17 +19,17 @@ enum SystemActions {
             try process.run()
             process.waitUntilExit()
         } catch {
-            return "Falhou ao iniciar: \(error.localizedDescription)"
+            return "Failed to start: \(error.localizedDescription)"
         }
 
         if process.terminationStatus == 0 {
-            return "Purge concluído"
+            return "Purge completed"
         }
         let errData = errPipe.fileHandleForReading.readDataToEndOfFile()
         let errText = String(data: errData, encoding: .utf8) ?? ""
         if errText.contains("User canceled") || errText.contains("-128") {
-            return "Cancelado pelo usuário"
+            return "Cancelled by user"
         }
-        return "Falhou: \(errText.trimmingCharacters(in: .whitespacesAndNewlines))"
+        return "Failed: \(errText.trimmingCharacters(in: .whitespacesAndNewlines))"
     }
 }
