@@ -18,7 +18,6 @@
   ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
   ![Swift](https://img.shields.io/badge/swift-5.9%2B-orange)
   ![License](https://img.shields.io/badge/license-MIT-red)
-  ![Stars](https://img.shields.io/github/stars/yourusername/system-pulse?style=social)
 </div>
 
 ---
