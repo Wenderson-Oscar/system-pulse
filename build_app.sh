@@ -47,7 +47,7 @@ cat > "$CONTENTS/Info.plist" << 'PLIST'
     <key>NSHighResolutionCapable</key>
     <true/>
     <key>NSCameraUsageDescription</key>
-    <string>SystemPulse detecta quando a câmera está em uso.</string>
+    <string>SystemPulse detects when the camera is in use.</string>
 </dict>
 </plist>
 PLIST
@@ -56,6 +56,6 @@ echo "==> Ad-hoc signing..."
 codesign --force --deep --sign - "$APP_DIR"
 
 echo ""
-echo "✅ Pronto: $(pwd)/$APP_DIR"
-echo "   Abrir:  open $APP_DIR"
-echo "   Mover:  mv $APP_DIR /Applications/"
+echo "✅ Done: $(pwd)/$APP_DIR"
+echo "   Open:   open $APP_DIR"
+echo "   Move:   mv $APP_DIR /Applications/"
