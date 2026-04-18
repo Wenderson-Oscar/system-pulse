@@ -1,0 +1,64 @@
+{
+        "configurations": [
+                {
+                        "type": "swift",
+                        "request": "launch",
+                        "args": [],
+                        "cwd": "${workspaceFolder:gesture_code}",
+                        "name": "Debug GestureShortcuts",
+                        "target": "GestureShortcuts",
+                        "configuration": "debug",
+                        "preLaunchTask": "swift: Build Debug GestureShortcuts"
+                },
+                {
+                        "type": "swift",
+                        "request": "launch",
+                        "args": [],
+                        "cwd": "${workspaceFolder:gesture_code}",
+                        "name": "Release GestureShortcuts",
+                        "target": "GestureShortcuts",
+                        "configuration": "release",
+                        "preLaunchTask": "swift: Build Release GestureShortcuts"
+                },
+                {
+                        "type": "swift",
+                        "request": "launch",
+                        "args": [],
+                        "cwd": "${workspaceFolder:gesture_code}",
+                        "name": "Debug PerfMonitor",
+                        "target": "PerfMonitor",
+                        "configuration": "debug",
+                        "preLaunchTask": "swift: Build Debug PerfMonitor"
+                },
+                {
+                        "type": "swift",
+                        "request": "launch",
+                        "args": [],
+                        "cwd": "${workspaceFolder:gesture_code}",
+                        "name": "Release PerfMonitor",
+                        "target": "PerfMonitor",
+                        "configuration": "release",
+                        "preLaunchTask": "swift: Build Release PerfMonitor"
+                },
+                {
+                        "type": "swift",
+                        "request": "launch",
+                        "args": [],
+                        "cwd": "${workspaceFolder:system-pulse}",
+                        "name": "Debug SystemPulse",
+                        "target": "SystemPulse",
+                        "configuration": "debug",
+                        "preLaunchTask": "swift: Build Debug SystemPulse"
+                },
+                {
+                        "type": "swift",
+                        "request": "launch",
+                        "args": [],
+                        "cwd": "${workspaceFolder:system-pulse}",
+                        "name": "Release SystemPulse",
+                        "target": "SystemPulse",
+                        "configuration": "release",
+                        "preLaunchTask": "swift: Build Release SystemPulse"
+                }
+        ]
+}

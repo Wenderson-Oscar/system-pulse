@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+    <rect width="1024" height="1024" rx="224" fill="#131318"/>
+    
+    <!-- CPU Pins -->
+    <g stroke="#3a3a45" stroke-width="28" stroke-linecap="round">
+        <!-- Top -->
+        <path d="M 284 256 V 170 M 398 256 V 170 M 512 256 V 170 M 626 256 V 170 M 740 256 V 170" />
+        <!-- Bottom -->
+        <path d="M 284 768 V 854 M 398 768 V 854 M 512 768 V 854 M 626 768 V 854 M 740 768 V 854" />
+        <!-- Left -->
+        <path d="M 256 284 H 170 M 256 398 H 170 M 256 512 H 170 M 256 626 H 170 M 256 740 H 170" />
+        <!-- Right -->
+        <path d="M 768 284 H 854 M 768 398 H 854 M 768 512 H 854 M 768 626 H 854 M 768 740 H 854" />
+    </g>
+
+    <!-- CPU Body -->
+    <rect x="256" y="256" width="512" height="512" rx="64" fill="#1c1c24" stroke="#4a4a55" stroke-width="20"/>
+    
+    <!-- CPU Inner Die -->
+    <rect x="352" y="352" width="320" height="320" rx="32" fill="#252530" stroke="#33e680" stroke-width="8" stroke-opacity="0.3"/>
+
+    <!-- Static Pulse Line (ECG) -->
+    <defs>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#33e680" stop-opacity="0.1"/>
+            <stop offset="20%" stop-color="#33e680" stop-opacity="1"/>
+            <stop offset="80%" stop-color="#33e680" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#33e680" stop-opacity="0.1"/>
+        </linearGradient>
+    </defs>
+    
+    <polyline points="150,512 320,512 400,350 512,750 624,250 704,512 874,512" 
+              fill="none" 
+              stroke="url(#pulseGrad)" 
+              stroke-width="48" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              filter="url(#glow)"/>
+</svg>

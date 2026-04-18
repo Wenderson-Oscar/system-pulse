@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Xcode
+DerivedData/
+*.xcworkspace/
+*.xcodeproj/
+*.xcuserstate
+*.xcuserdata/
+*.swiftsourceinfo
+
+# App bundles
+*.app/
+*.dSYM/
+
+# Icon and conversion artifacts
+systempulse.iconset/
+icon_*.png
+generate_icon.swift
+AppIcon.icns
+
+# User/editor files
+*.swp
+*.swo
+*.tmp
+*.log
+
+# Other
+*.plist
