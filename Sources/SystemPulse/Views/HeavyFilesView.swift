@@ -3,6 +3,7 @@ import AppKit
 
 struct HeavyFilesView: View {
     @ObservedObject var monitor: PerformanceMonitor
+    var onClose: (() -> Void)? = nil
     @State private var files: [HeavyFile] = []
     @State private var scanning = false
 
@@ -14,6 +15,14 @@ struct HeavyFilesView: View {
                 Spacer()
                 Button(scanning ? "Scanning…" : "Scan Now") { scan() }
                     .disabled(scanning)
+                if let onClose {
+                    Button {
+                        onClose()
+                    } label: {
+                        Label("Back", systemImage: "chevron.left")
+                    }
+                    .controlSize(.small)
+                }
             }
             Text("Folders: Downloads, Desktop, Documents, Movies")
                 .font(.caption)

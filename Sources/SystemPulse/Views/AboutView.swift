@@ -35,6 +35,11 @@ struct AboutView: View {
             "Monitors real-time download and upload throughput in Mbps."
         ),
         (
+            "network",
+            "Open Ports",
+            "Shows listening TCP and open UDP ports with the owning process, PID, user, and executable path."
+        ),
+        (
             "battery.100.bolt",
             "Battery Health",
             "Shows battery health percentage and total charge cycle count."

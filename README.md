@@ -36,6 +36,7 @@ Built entirely in Swift and SwiftUI, SystemPulse reads data straight from Apple'
 - **System Memory** — monitors total, used, active, wired, compressed, and free RAM across the entire system.
 - **GPU Usage** — reads GPU utilization (renderer & tiler), VRAM used/total, and GPU name via IOKit (`IOAccelerator`).
 - **Network Speed** — shows live download/upload speed in Mbps, summing all physical network interfaces.
+- **Open Ports Monitor** — shows listening TCP ports and open UDP sockets in real time, including owning process, PID, user, executable path, and close/force quit actions.
 - **Fan Speed (SMC)** — reads fan RPM directly from the System Management Controller (SMC).
 - **System Lag** — measures main-thread responsiveness with a high-frequency timer to detect system slowdowns.
 - **Process List** — lists top processes by CPU and memory usage, with PID and app name.
@@ -88,5 +89,6 @@ The app will appear in the top menu bar. Click the icon to see the detailed pane
 - Battery health is calculated as `MaxCapacity / DesignCapacity * 100`.
 - GPU usage is system-wide; per-process GPU usage is not available via public macOS APIs.
 - Network speed sums all physical interfaces (excludes `lo`, `utun`, `awdl`, `llw`).
+- Open ports are collected with `/usr/sbin/lsof`; terminating a port owner closes every socket held by that process.
 - RAM purge requires administrator privileges and triggers a system prompt.
 - Fan speed is read-only; writing fan speeds is intentionally unsupported to avoid hardware damage.

@@ -3,13 +3,25 @@ import AppKit
 
 struct ProcessListView: View {
     @ObservedObject var monitor: PerformanceMonitor
+    var onClose: (() -> Void)? = nil
     @State private var rows: [ProcessRow] = []
     @State private var timer: Timer?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Processes (top 10 by RAM)")
-                .font(.headline)
+            HStack {
+                Text("Processes (top 10 by RAM)")
+                    .font(.headline)
+                Spacer()
+                if let onClose {
+                    Button {
+                        onClose()
+                    } label: {
+                        Label("Back", systemImage: "chevron.left")
+                    }
+                    .controlSize(.small)
+                }
+            }
             Divider()
             Table(rows) {
                 TableColumn("PID") { r in Text("\(r.pid)").font(.system(.caption, design: .monospaced)) }

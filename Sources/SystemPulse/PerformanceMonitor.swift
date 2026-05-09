@@ -45,6 +45,7 @@ final class PerformanceMonitor: ObservableObject {
 
     let processes = ProcessListMonitor()
     let fileScanner = FileScanner()
+    let ports = PortMonitor()
 
     private var timer: Timer?
 

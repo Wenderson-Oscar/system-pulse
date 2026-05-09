@@ -6,13 +6,28 @@ struct PopoverView: View {
     @State private var showPurgeConfirm = false
     @State private var showLagResetConfirm = false
     @State private var netPeakMbps: Double = 10
-    @State private var showAbout = false
+    @State private var activePanel: PopoverPanel = .dashboard
+
+    private enum PopoverPanel {
+        case dashboard
+        case about
+        case processes
+        case heavyFiles
+        case ports
+    }
 
     var body: some View {
-        if showAbout {
-            AboutView(onClose: { showAbout = false })
+        switch activePanel {
+        case .about:
+            AboutView(onClose: { activePanel = .dashboard })
                 .frame(width: 300, height: 520)
-        } else {
+        case .processes:
+            ProcessListView(monitor: monitor, onClose: { activePanel = .dashboard })
+        case .heavyFiles:
+            HeavyFilesView(monitor: monitor, onClose: { activePanel = .dashboard })
+        case .ports:
+            PortsView(monitor: monitor, onClose: { activePanel = .dashboard })
+        case .dashboard:
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 8) {
                 // Header
@@ -21,7 +36,7 @@ struct PopoverView: View {
                         .font(.system(size: 12, weight: .bold))
                     Spacer()
                     Button {
-                        showAbout = true
+                        openPanel(.about)
                     } label: {
                         Image(systemName: "info.circle")
                             .font(.system(size: 13))
@@ -160,12 +175,18 @@ struct PopoverView: View {
                 // Actions
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Actions").font(.system(size: 10, weight: .semibold))
-                    HStack(spacing: 6) {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 6),
+                        GridItem(.flexible(), spacing: 6)
+                    ], spacing: 6) {
                         compactButton("Processes", icon: "list.bullet.rectangle") {
-                            ToolWindows.showProcesses(monitor: monitor)
+                            openPanel(.processes)
                         }
                         compactButton("Files", icon: "doc.text.magnifyingglass") {
-                            ToolWindows.showHeavyFiles(monitor: monitor)
+                            openPanel(.heavyFiles)
+                        }
+                        compactButton("Ports", icon: "network") {
+                            openPanel(.ports)
                         }
                         compactButton("Purge", icon: "arrow.triangle.2.circlepath.circle") {
                             showPurgeConfirm = true; showLagResetConfirm = false
@@ -215,7 +236,13 @@ struct PopoverView: View {
             .padding(12)
         }
         .frame(width: 300, height: 520)
-        } // else
+        }
+    }
+
+    private func openPanel(_ panel: PopoverPanel) {
+        showPurgeConfirm = false
+        showLagResetConfirm = false
+        activePanel = panel
     }
 
     // MARK: - Compact Components
@@ -273,7 +300,7 @@ struct PopoverView: View {
         Button(action: action) {
             Label(label, systemImage: icon)
                 .font(.system(size: 9))
-                .labelStyle(.titleOnly)
+                .frame(maxWidth: .infinity)
         }
         .buttonStyle(.bordered)
     }
