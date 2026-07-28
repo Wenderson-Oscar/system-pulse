@@ -14,7 +14,7 @@
 
   <br/><br/>
 
-  ![Version](https://img.shields.io/badge/version-1.0-blue)
+  ![Version](https://img.shields.io/badge/version-1.1-blue)
   ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
   ![Swift](https://img.shields.io/badge/swift-5.9%2B-orange)
   ![License](https://img.shields.io/badge/license-MIT-red)

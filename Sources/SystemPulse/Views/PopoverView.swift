@@ -70,6 +70,20 @@ struct PopoverView: View {
                     }()
                 )
 
+                // Swap
+                compactBar(
+                    icon: "arrow.left.arrow.right.circle.fill",
+                    title: "Swap",
+                    value: String(format: "%.0f%%", monitor.systemMemory.swapUsedPercent),
+                    progress: monitor.systemMemory.swapUsedPercent / 100,
+                    tint: monitor.systemMemory.swapUsedPercent > 85 ? .red : (monitor.systemMemory.swapUsedPercent > 60 ? .orange : .accentColor),
+                    detail: {
+                        let fmt: (UInt64) -> String = { ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .memory) }
+                        let m = monitor.systemMemory
+                        return m.swapTotalBytes > 0 ? "\(fmt(m.swapUsedBytes))/\(fmt(m.swapTotalBytes))" : "Inactive"
+                    }()
+                )
+
                 // GPU
                 let gpuUsage = monitor.gpus.map(\.utilizationPercent).max() ?? 0
                 compactBar(

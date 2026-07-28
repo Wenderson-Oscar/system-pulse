@@ -8,10 +8,17 @@ struct SystemMemoryInfo {
     var wiredBytes: UInt64
     var compressedBytes: UInt64
     var freeBytes: UInt64
+    var swapTotalBytes: UInt64 = 0
+    var swapUsedBytes: UInt64 = 0
 
     var usedPercent: Double {
         guard totalBytes > 0 else { return 0 }
         return Double(usedBytes) / Double(totalBytes) * 100.0
+    }
+
+    var swapUsedPercent: Double {
+        guard swapTotalBytes > 0 else { return 0 }
+        return Double(swapUsedBytes) / Double(swapTotalBytes) * 100.0
     }
 }
 
@@ -40,7 +47,19 @@ final class SystemMemoryMonitor {
         // "Used" as shown by Activity Monitor ≈ active + wired + compressed
         let used = active + wired + compressed
 
+        let swap = readSwap()
+
         return SystemMemoryInfo(totalBytes: total, usedBytes: used, activeBytes: active,
-                                wiredBytes: wired, compressedBytes: compressed, freeBytes: free)
+                                wiredBytes: wired, compressedBytes: compressed, freeBytes: free,
+                                swapTotalBytes: swap.total, swapUsedBytes: swap.used)
+    }
+
+    private func readSwap() -> (total: UInt64, used: UInt64) {
+        var usage = xsw_usage()
+        var size = MemoryLayout<xsw_usage>.size
+        guard sysctlbyname("vm.swapusage", &usage, &size, nil, 0) == 0 else {
+            return (0, 0)
+        }
+        return (usage.xsu_total, usage.xsu_used)
     }
 }
